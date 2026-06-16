@@ -32,13 +32,22 @@ pipeline {
             }
         }
 
-        stage('Push Changes') {
+stage('Push Changes') {
     steps {
-        sh '''
-            git add destination.txt
-            git commit -m "Update destination file" || true
-            git push origin HEAD:main
-        '''
+        withCredentials([
+            usernamePassword(
+                credentialsId: 'github-creds',
+                usernameVariable: 'GITHUB_USER',
+                passwordVariable: 'GITHUB_TOKEN'
+            )
+        ]) {
+            sh '''
+                git add destination.txt
+                git commit -m "Update destination file" || true
+
+                git push https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/luffykap/pgrm4.git HEAD:main
+            '''
+        }
     }
 }
     }
