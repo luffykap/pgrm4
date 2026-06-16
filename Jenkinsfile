@@ -33,21 +33,14 @@ pipeline {
         }
 
         stage('Push Changes') {
-            steps {
-                sh '''
-                    git checkout main || git checkout -b main
-
-                    git config user.email "luffykapill@gmail.com"
-                    git config user.name "luffykap"
-
-                    git add destination.txt
-
-                    git commit -m "Update destination file" || true
-
-                    git push origin main
-                '''
-            }
-        }
+    steps {
+        sh '''
+            git add destination.txt
+            git commit -m "Update destination file" || true
+            git push origin HEAD:main
+        '''
+    }
+}
     }
 
     post {
