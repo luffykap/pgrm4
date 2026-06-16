@@ -1,4 +1,3 @@
-
 pipeline {
     agent any
 
@@ -32,24 +31,24 @@ pipeline {
                 sh 'mvn exec:java -Dexec.mainClass="com.luffy.App"'
             }
         }
-      
-        stage('Commit Changes') {
-    stage('Push Changes') {
-    steps {
-        sh '''
-            git checkout main
 
-            git config user.email "luffykapill@gmail.com"
-            git config user.name "luffykap"
+        stage('Push Changes') {
+            steps {
+                sh '''
+                    git checkout main || git checkout -b main
 
-            git add destination.txt
-            git commit -m "Update destination file" || true
+                    git config user.email "luffykapill@gmail.com"
+                    git config user.name "luffykap"
 
-            git push origin main
-        '''
+                    git add destination.txt
+
+                    git commit -m "Update destination file" || true
+
+                    git push origin main
+                '''
+            }
+        }
     }
-}
-    }}
 
     post {
         success {
